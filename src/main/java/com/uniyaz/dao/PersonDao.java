@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import java.util.List;
+
 /**
  * @author Samet BUDAK
  * @since
@@ -33,5 +35,16 @@ public class PersonDao {
         Person person = (Person) query.uniqueResult();
 
         return person;
+    }
+
+    public List<Person> findAllPersons() {
+        String hql = "Select person from Person person";
+
+        Session currentSession = sessionFactory.openSession();
+        Query query = currentSession.createQuery(hql);
+
+        List<Person> personList = (List<Person>) query.list();
+
+        return personList;
     }
 }

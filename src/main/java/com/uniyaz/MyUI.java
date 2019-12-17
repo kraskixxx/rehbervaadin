@@ -6,6 +6,7 @@ import com.uniyaz.service.PersonService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
+import java.util.List;
 
 /**
  *
@@ -163,14 +165,16 @@ public class MyUI extends UI {
         indexedContainer.addContainerProperty("telNo", String.class, null);
         grid.setContainerDataSource(indexedContainer);
 
-//        for (Person person : personList) {
-//
-//            Item item = indexedContainer.addItem(person);
-//            item.getItemProperty("id").setValue(person.getId());
-//            item.getItemProperty("ad").setValue(person.getAd());
-//            item.getItemProperty("soyad").setValue(person.getSoyad());
-//            item.getItemProperty("telNo").setValue(person.getTelNo());
-//        }
+        List<Person> personList = personService.findAllPersons();
+
+        for (Person person : personList) {
+
+            Item item = indexedContainer.addItem(person);
+            item.getItemProperty("id").setValue(person.getId());
+            item.getItemProperty("ad").setValue(person.getAd());
+            item.getItemProperty("soyad").setValue(person.getSoyad());
+            item.getItemProperty("telNo").setValue(person.getTelNo());
+        }
     }
 
 
