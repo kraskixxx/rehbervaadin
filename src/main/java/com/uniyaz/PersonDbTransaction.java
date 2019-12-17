@@ -1,5 +1,7 @@
 package com.uniyaz;
 
+import com.uniyaz.domain.Person;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

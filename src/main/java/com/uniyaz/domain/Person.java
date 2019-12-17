@@ -1,13 +1,24 @@
-package com.uniyaz;
+package com.uniyaz.domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "PERSON")
 public class Person implements Serializable {
-    private Integer id;
-    private String ad;
-    private String soyad;
-    private String telNo;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @Column(length = 150)
+    private String ad;
+
+    @Column(length = 150)
+    private String soyad;
+
+    @Column(length = 50)
+    private String telNo;
 
     public Person() {
 
@@ -24,6 +35,11 @@ public class Person implements Serializable {
         this.ad = ad;
         this.soyad = soyad;
         this.telNo = telNo;
+    }
+
+    @Override
+    public String toString() {
+        return this.getId() >0 ? this.getAd() : "";
     }
 
     public int getId() {

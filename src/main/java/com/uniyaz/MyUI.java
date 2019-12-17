@@ -1,16 +1,17 @@
 package com.uniyaz;
 
+import com.uniyaz.domain.Person;
+import com.uniyaz.hibernateutils.HibernateUtil;
+import com.uniyaz.service.PersonService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
 
 import javax.servlet.annotation.WebServlet;
-import java.util.List;
 
 /**
  *
@@ -21,9 +22,13 @@ public class MyUI extends UI {
 
     PersonDbTransaction personDbTransaction;
     Person gettedPersonById;
+    PersonService personService;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+
+        personService = new PersonService();
+
         final VerticalLayout layout = new VerticalLayout();
 
 
@@ -98,10 +103,24 @@ public class MyUI extends UI {
             //loadGridData(grid);
         });
 
+        Button kisiyiIddenGetir = new Button("1 Id'li kişiyi getir");
+        kisiyiIddenGetir.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                Person personById = personService.findById(1);
+
+                if(personById != null) {
+                    name.setValue(personById.getAd());
+                    surname.setValue(personById.getSoyad());
+                    telNo.setValue(personById.getTelNo());
+                }
+            }
+        });
+
         gridClickEventHandler(name, surname, telNo , grid, guncelleButton, silButton);
 
 
-        layout.addComponents(name,surname,telNo, kisiEkleButton, tumKisileriGosterButton, guncelleButton, silButton);
+        layout.addComponents(name,surname,telNo, kisiEkleButton, tumKisileriGosterButton, guncelleButton, silButton,kisiyiIddenGetir);
 
         layout.setMargin(true);
         layout.setSpacing(true);
@@ -125,8 +144,14 @@ public class MyUI extends UI {
         grid.getContainerDataSource().removeAllItems();
 
         personDbTransaction = new PersonDbTransaction();
-        List<Person> personList = personDbTransaction.getAllPerson();
+//        List<Person> personList = personDbTransaction.getAllPerson();
 
+        createAndFillContainer(grid);
+
+
+    }
+
+    private void createAndFillContainer(Grid grid) {
         IndexedContainer indexedContainer = new IndexedContainer();
         indexedContainer.addContainerProperty("id", Integer.class, null);
         indexedContainer.addContainerProperty("ad", String.class, null);
@@ -134,18 +159,15 @@ public class MyUI extends UI {
         indexedContainer.addContainerProperty("telNo", String.class, null);
         grid.setContainerDataSource(indexedContainer);
 
-        for (Person person : personList) {
-
-            Item item = indexedContainer.addItem(person);
-            item.getItemProperty("id").setValue(person.getId());
-            item.getItemProperty("ad").setValue(person.getAd());
-            item.getItemProperty("soyad").setValue(person.getSoyad());
-            item.getItemProperty("telNo").setValue(person.getTelNo());
-        }
-
-
+//        for (Person person : personList) {
+//
+//            Item item = indexedContainer.addItem(person);
+//            item.getItemProperty("id").setValue(person.getId());
+//            item.getItemProperty("ad").setValue(person.getAd());
+//            item.getItemProperty("soyad").setValue(person.getSoyad());
+//            item.getItemProperty("telNo").setValue(person.getTelNo());
+//        }
     }
-
 
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
