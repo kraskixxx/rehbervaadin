@@ -10,6 +10,8 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -19,6 +21,8 @@ import javax.servlet.annotation.WebServlet;
 @Theme("mytheme")
 @Widgetset("com.uniyaz.MyAppWidgetset")
 public class MyUI extends UI {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(MyUI.class);
 
     PersonDbTransaction personDbTransaction;
     Person gettedPersonById;

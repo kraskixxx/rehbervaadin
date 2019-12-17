@@ -24,6 +24,7 @@ public class PersonDao {
 
     public Person findPersonById(Integer id) {
         String hql = "Select person from Person person where id = :id";
+
         Session currentSession = sessionFactory.openSession();
         Query query = currentSession.createQuery(hql);
 
